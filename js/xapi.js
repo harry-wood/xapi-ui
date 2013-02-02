@@ -453,6 +453,7 @@ $(document).ready(function() {
 
     // ask the user to be patient :)
     $('#xsltlist').html('<p>Submitted query - please wait. XAPI queries often take AT LEAST TEN SECONDS.</p><pre>Querying '+queryurl+'</pre>');
+    $('#xsltlist_ps').html('');
     latest_queryurl = queryurl; // remember most recent submission
     // submit XAPI call
     xapiurl = queryurl;

@@ -114,6 +114,12 @@ ul#tabstabs li {
 	border-right: none;
 	border-top: none;
 }
+ul#tabstabs li.tabselected {
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: none;
+}
 
 
 /* The UI elements for requesting the in-browser table */
