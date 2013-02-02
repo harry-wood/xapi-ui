@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <title>
-      XAPI URL Builder
+      XAPI Query Builder
     </title>
     <!-- JQuery UI is currently not used but may be used in the future
     for fancy UI elements -->
@@ -23,10 +23,10 @@
   
   <body>
     <h1 id="title">
-      XAPI URL Builder
+      XAPI Query Builder
     </h1>
     <div id="xapiselector">
-      <div id="search_by_tags">
+      <div id="search_by_tags" class="filter_box_outer">
         <div class="filter_box_top">
            <input type="checkbox" id="searchbytag" checked="checked" />
            <label for="searchbytag">Search by Tag</label>
@@ -43,25 +43,21 @@
         </div>
       </div>
 
-      <div id="search_by_bbox">
+      <div id="search_by_bbox" class="filter_box_outer">
         <div class="filter_box_top">
-          <input type="checkbox" id="searchbybbox" />
+          <input type="checkbox" id="searchbybbox" checked="checked" />
           <label for="searchbybbox">Search by Area</label>
         </div>
         <div id="search_by_bbox_filter" class="filter_box_content">
           
+         <div id="map_widgetry_all">
           <div id="mapcontrol">
             <input type="radio" name="type" id="bboxNone" checked="checked" />
             <label for="bboxNone">navigate</label>
-          
+              <br />
             <input type="radio" name="type" id="bboxToggle" />
             <label for="bboxToggle">select area</label>
           </div>
-          
-          <div id="bboxmap_outer">
-            <div id="bboxmap"></div>
-          </div>
-          <!--<div id="attribution"></div>-->
           
           <div id="bbox">
           <div id="b_left" class="bounds">
@@ -81,19 +77,48 @@
               <input type="text" id="bbox_top" class="bbox" maxlength="10" value="90.00000" />
             </div>
           </div>
+         </div>
+
+          <div id="bboxmap_outer">
+            <div id="bboxmap"></div>
+          </div>
+          <!--<div id="attribution"></div>-->
+          
+
         </div>
       </div>
 
-      <div id="xapiurls">
-         <!-- javascript writes content to here -->
+      <ul id="tabstabs">
+        <li class="tabselected" id="tab_cmds">XAPI commands</li><!-- no whitespace pls
+     --><li id="tab_live">Live query: <input type="button" value="Submit" id="xsltlist_gobut" /><div id="xsltlist_bybut"></div></li>
+	<li>&nbsp;</li>
+      </ul>
+
+
+
+      <div id="xapicmds_outer">
+        <div id="xapiurls">
+           <!-- javascript writes content to here -->
+        </div>
+        <div id="osmosiscmd_outer">
+          Osmosis command:
+          <div id="osmosiscmd">
+            <!-- javascript writes content to here -->
+          </div>
+        </div>
       </div>
-      <div id="osmosiscmd_outer">
-        Osmosis command:
-        <div id="osmosiscmd">
+
+
+      <div id="xsltlist_outer">
+        <div id="xsltlist">
+          <!-- javascript writes content to here -->
+        </div>
+        <div id="xsltlist_ps">
           <!-- javascript writes content to here -->
         </div>
       </div>
     </div>
+
     <div id="footer">
        <a href="https://github.com/harry-wood/xapi-ui">XAPI-UI on github</a>
     </div>

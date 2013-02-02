@@ -3,6 +3,9 @@
 h1#title {
 	margin:2px;
 }
+#bbox {
+	display: inline-block;
+}
 #bboxmap {
     width:100%;
     height:100%;
@@ -11,7 +14,7 @@ h1#title {
 
 #bboxmap_outer {
     padding:6px;
-    width: 542px;
+    width: /* 90%; */ 542px;
     height: 240px;
     overflow: auto;
     resize: both;
@@ -19,18 +22,29 @@ h1#title {
     background-color:#eee;
 }
 
-.filter_box_content {
+#map_widgetry_all {
+	float: left;
+	clear: both;
+}
+
+.filter_box_outer {
 	background-color:#eaf5ea;
-	padding:10px;
 	margin-bottom:10px;
+	padding:2px;
 }
 
 .filter_box_top {
+	display: inline;
 	font-weight:bold;
-	background-color:#E0EEE0;
+	background-color:#C0CCC0;
 	padding:3px;
-	margin-top:10px;
+	float: left;
 }
+.filter_box_content {
+	display: inline;
+	padding:10px;
+}
+
 
 
 #mapcontrol  {
@@ -46,6 +60,7 @@ h1#title {
 	font-size:90%;
 	padding:4px;
 	margin-top:14px;
+	clear: both;
 }
 
 #xapiurls tr.line {
@@ -75,7 +90,7 @@ h1#title {
 	margin-top:14px;
 }
 #osmosiscmd {
-	width:auto;
+	width: 40em;
 	font-family: Courier New, Courier, monospace;
 	font-weight: normal;
 	background:WHITE;
@@ -83,6 +98,49 @@ h1#title {
 	padding:2px 15px 2px 15px;
 }
 
+
+ul#tabstabs {
+	display: block;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+ul#tabstabs li {
+	display: inline-block;
+	margin: 0px;
+	padding: 5px 40px;
+	border-bottom: 1px solid black;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+}
+
+
+/* The UI elements for requesting the in-browser table */
+#xsltlist_outer {
+	background-color:#FFFFAA;
+	font-weight:bold;
+	font-size:90%;
+	padding:4px;
+	margin-top:14px;
+}
+#xsltlist {
+	width:auto;
+	font-weight: normal;
+	background:WHITE;
+	border:1px solid GREY;
+	padding:2px 15px 2px 15px;
+}
+#xsltlist_bybut {display: inline; font-size: x-small; font-weight: normal; font-style:italic;}
+/* Styling for the rendered table itself */
+table#xapiresults {width: 100%; border-collapse: collapse; border: 1px solid black;}
+table#xapiresults tr th {background-color: silver;}
+table#xapiresults tr td {vertical-align: top;}
+.tag    .tagk {color: rgb(150, 150, 150);}
+.tag_hi .tagk {color: rgb(100, 100, 100);}
+.tag_hi       {font-weight: bold;}
+.xapiresults_objid, .xapiresults_latlon { display: block; margin: 10px;}
+td.xapiresults_tagcell {font-size: smaller;}
 
 /*input { font: 1em Verdana, Arial, sans serif; border:none;}*/
 
@@ -95,7 +153,7 @@ input.bbox { width:90px; text-align: center;}
 
 .bounds { border: none; text-align: center; width: 90px; height: 33px}
 
-#bbox   { position:relative; margin:5px; height:99px; width:185px;}
+#bbox   { position:relative; margin:5px; height:99px; width:185px; }
 #b_top    { position: absolute; top: 0px; left: 50px; }
 #b_right  { position: absolute; top: 33px; left: 95px; }
 #b_bottom { position: absolute; top: 66px; left: 50px; }

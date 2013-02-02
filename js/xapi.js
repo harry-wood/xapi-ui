@@ -8,8 +8,7 @@ $(document).ready(function() {
   var drawbox = false;
   
   // Set up the map
-  map = new OpenLayers.Map('bboxmap', 
-                           {projection: "EPSG:900913",});
+  map = new OpenLayers.Map('bboxmap', {projection: "EPSG:900913",});
 
   map.addControl(new OpenLayers.Control.Attribution());
     
@@ -162,6 +161,10 @@ $(document).ready(function() {
       ',' + bbox.right.get() + ',' + bbox.top.get();
     return b;
   };
+  var bboxarea = function() {
+    return Math.abs(parseFloat(bbox.right.get()) - parseFloat(bbox.left.get())) * Math.abs(parseFloat(bbox.bottom.get()) - parseFloat(bbox.top.get()));
+  };
+  var bboxarea_maxpermit = 0.5;
   
   // Function to return an osmosis command based on chosen filters
   var osmosisCommand = function() {
@@ -264,7 +267,13 @@ $(document).ready(function() {
     if ($('#searchbytag').is(':checked')) {
       xapiQuery = xapiQuery + tagFilterXAPIclause();
       if ($('#searchbybbox').is(':checked')) {
-        xapiQuery = xapiQuery + '[' + bboxXAPIclause() + ']'; };
+        xapiQuery = xapiQuery + '[' + bboxXAPIclause() + ']';
+        if (bboxarea() < bboxarea_maxpermit){
+          $('#xsltlist_bybut').html('&nbsp;');
+        }else{
+          $('#xsltlist_bybut').html(' (bounding box is currently too big to run in-browser [max '+bboxarea_maxpermit+' deg sq])');
+        }
+      };
     }
     else {
       if ($('#searchbybbox').is(':checked')) {
@@ -284,7 +293,8 @@ $(document).ready(function() {
     
     
     osmosiscmdHTML = osmosisCommand(); 
-    $('#osmosiscmd').html( osmosiscmdHTML );  
+    $('#osmosiscmd').html( osmosiscmdHTML );
+
   };
 
   // Set up some UI element functions
@@ -360,6 +370,126 @@ $(document).ready(function() {
     update_results();
   });
   
-  $('#search_by_bbox_filter').hide();
+  ////////////////////////////////////////////////
+  // Functions to handle geolocation
+  var geolocinit;
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition( function (userloc) {
+      userlon = userloc.coords.longitude;
+      userlat = userloc.coords.latitude;
+      $('#bbox_left'  ).val(userlon-0.1);
+      $('#bbox_bottom').val(userlat-0.05);
+      $('#bbox_right' ).val(userlon+0.1);
+      $('#bbox_top'   ).val(userlat+0.05);
+      read_inputfields();
+      update_bbox();
+      update_results();
+      var fromProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
+      var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+      map.zoomToExtent(
+	new OpenLayers.Bounds((userlon-0.15), (userlat-0.075), (userlon+0.15), (userlat+0.075)).transform(fromProjection,toProjection)
+	);
+    });
+  }else{
+    //geolocinit = function(){};
+  }
+
+  ////////////////////////////////////////////////
+  // Functions to perform XAPI query in-browser
+  // prepare the XSLT renderer
+  var xsl;
+  var xsltProcessor;
+  $.get('xapi_to_html.xsl', function(data){
+    xsl = data;
+    if ((!window.ActiveXObject) && (document.implementation && document.implementation.createDocument))  // not IE but Mozilla, Firefox, Opera, etc.
+    {
+      xsltProcessor=new XSLTProcessor();
+      xsltProcessor.importStylesheet(xsl);
+    }
+  }, 'xml');
+
+  var latest_queryurl; // This globalvar is to prevent collisions of multiple requests
+  var xapixmlreceived = function(data, queryurl) {
+    if(latest_queryurl != queryurl){
+      alert("Received result for\n"+queryurl+"\nbut superceded by\n"+latest_queryurl);  // TMP - just for dev
+      return;
+    }
+
+    // apply the XSLT and render
+    if (window.ActiveXObject) { // IE
+      rendered=data.transformNode(xsl);
+    } else if (document.implementation && document.implementation.createDocument) {  // Mozilla, Firefox, Opera, etc.
+      rendered = xsltProcessor.transformToFragment(data, document);
+    }
+    $('#xsltlist').html(rendered);
+    $('#xsltlist_ps').html('<p>Queried from:</p><pre>'+queryurl+'</pre>');
+  };
+
+  var requestxsltlist = function() {
+
+    queryurl = 'http://www.overpass-api.de/api/xapi?';
+    // only allow xapiQuery if both tag-search and area-search are enabled, and the area to search is small
+    if ($('#searchbytag').is(':checked')) {
+      if($('#tag').val()=='key=value'){
+         alert("\"key=value\" is not a real tag query - try something like:\n  amenity=pub\n  barrier=gate\n  highway=*");
+         return;
+      }
+      queryurl += tagFilterXAPIclause();
+      if ($('#searchbybbox').is(':checked')) {
+        if (bboxarea() < bboxarea_maxpermit){
+          queryurl += '[' + bboxXAPIclause() + ']';
+        } else {
+          alert("Please choose a smaller area. Maximum is "+bboxarea_maxpermit+" degree-squared, current selection is " + bboxarea());
+          return;
+        }
+      } else {
+          alert("The in-browser display will only run if you specify a tag search AND an area search (less than "+bboxarea_maxpermit+" degree square)");
+          return;
+      }
+    } else {
+          alert("The in-browser display will only run if you specify a tag search AND an area search (less than "+bboxarea_maxpermit+" degree square)");
+          return;
+    }
+
+    // ask the user to be patient :)
+    $('#xsltlist').html('<p>Submitted query - please wait. XAPI queries often take AT LEAST TEN SECONDS.</p><pre>Querying '+queryurl+'</pre>');
+    latest_queryurl = queryurl; // remember most recent submission
+    // submit XAPI call
+    xapiurl = queryurl;
+    //xapiurl = 'placeholder_pubs.xml'; // This is handy for local devt
+    $.get(xapiurl, function(data) {xapixmlreceived(data, queryurl)}, 'xml');
+
+  };
+  $('#xsltlist_gobut').click(requestxsltlist);
+
+
+
+  // This bit creates the "tabbed" functionality
+  $('#tab_cmds').click(function(){
+    $('#xapicmds_outer').show();
+    $('#xsltlist_outer').hide();
+    $('#tab_cmds').addClass('tabselected');
+    $('#tab_live').removeClass('tabselected');
+  });
+  $('#tab_live').click(function(){
+    $('#xapicmds_outer').hide();
+    $('#xsltlist_outer').show();
+    $('#tab_cmds').removeClass('tabselected');
+    $('#tab_live').addClass('tabselected');
+  });
+
+
+
+
+
+
+  if(($('#searchbybbox').is(':checked'))){
+    $('#search_by_bbox_filter').show();
+    drawbox = true;
+  }else{
+    $('#search_by_bbox_filter').hide();
+  }
+  $('#xsltlist_outer').hide();
 
 });
+

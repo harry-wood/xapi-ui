@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="Overpass API">
+<note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
+<meta osm_base="2012-12-19T22:03:02Z"/>
+
+  <node id="105" lat="51.5238028" lon="-0.1430911">
+    <tag k="amenity" v="pub"/>
+    <tag k="created_by" v="Potlatch 0.10b"/>
+    <tag k="name" v="The Green Man"/>
+  </node>
+  <node id="108042" lat="51.5235442" lon="-0.1355991">
+    <tag k="addr:housenumber" v="31"/>
+    <tag k="addr:street" v="University Street"/>
+    <tag k="amenity" v="pub"/>
+    <tag k="name" v="The Jeremy Bentham"/>
+    <tag k="phone" v="020 7387 3033"/>
+    <tag k="postal_code" v="WC1E 6JL"/>
+    <tag k="randomjunk_bot" v="reverted edit by FilipeOliveira on 2008-11-24T15:02:32+00:00"/>
+    <tag k="toilets" v="yes"/>
+    <tag k="toilets:access" v="customers"/>
+    <tag k="toilets:wheelchair" v="no"/>
+    <tag k="wheelchair" v="limited"/>
+  </node>
+  <way id="3987624">
+    <nd ref="17577512"/>
+    <nd ref="20831440"/>
+    <nd ref="20831441"/>
+    <nd ref="20831437"/>
+    <nd ref="20831438"/>
+    <nd ref="17577512"/>
+    <tag k="amenity" v="pub"/>
+    <tag k="building" v="yes"/>
+    <tag k="landuse" v="commercial"/>
+    <tag k="name" v="The Maypole"/>
+  </way>
+  <relation id="1659702">
+    <member type="way" ref="121249985" role="outer"/>
+    <member type="way" ref="121249984" role="inner"/>
+    <tag k="amenity" v="pub"/>
+    <tag k="building" v="yes"/>
+    <tag k="name" v="The Millhouse"/>
+    <tag k="type" v="multipolygon"/>
+  </relation>
+</osm>
+
