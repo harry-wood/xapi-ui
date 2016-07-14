@@ -19,11 +19,6 @@
   ],
   "map": [
     {
-      "name": "MapQuest",
-      "tiles": "http://otile1.mqcdn.com/tiles/1.0.0/osm/",
-      "attribution": "<a href='<http://www.openstreetmap.org/'>OpenStreetMap</a> and contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a> Tiles Courtesy of <a href='http://www.mapquest.com/' target='_blank'>MapQuest</a> <img src='http://developer.mapquest.com/content/osm/mq_logo.png'>"
-    },
-    {
       "name": "OSM mapnik",
       "tiles": "http://tile.openstreetmap.org/",
       "attribution": "Data <a href='<http://www.openstreetmap.org/'>OpenStreetMap</a> and contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>"
