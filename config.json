@@ -1,20 +1,16 @@
 { 
   "baseurls": [
     {
-      "label" : "rabler.ru",
-      "url" : "http://jxapi.osm.rambler.ru/xapi/api/0.6/"
-    },
-    {
-      "label" : "MapQuest (out of date)",
-      "url" : "http://open.mapquestapi.com/xapi/api/0.6/"
-    },
-    {
-      "label" : "jxapi.openstreetmap.org",
-      "url" : "http://jxapi.openstreetmap.org/xapi/api/0.6/"
-    },
-    {
       "label" : "Overpass API",
       "url" : "http://www.overpass-api.de/api/xapi?"
+    },
+    {
+      "label" : "rambler.ru",
+      "url" : "http://overpass.osm.rambler.ru/cgi/xapi?"
+    },
+    {
+      "label" : "openstreetmap.fr",
+      "url" : "http://api.openstreetmap.fr/xapi?"
     } 
   ],
   "map": [
